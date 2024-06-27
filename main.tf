@@ -166,8 +166,6 @@ resource "aws_instance" "Githubinstance" {
     host = self.public_ip
     # The default username for our AMI
     user = "ec2-user"
-    # Private key for connection
-    private_key = "${file(var.private_key)}"
     # Type of connection
     type = "ssh"
   }
