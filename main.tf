@@ -30,7 +30,7 @@ resource "aws_subnet" "GithubVPCsubnet" {
   vpc_id                  = "${aws_vpc.GithubVPC.id}"
   cidr_block             = "${var.subnet_cidr}"
   map_public_ip_on_launch = true
-  availability_zone = "us-east-1a"
+  availability_zone = "${var.aws_region}a"
 
   tags = {
     Name = "Github subnet 1"
@@ -42,7 +42,7 @@ resource "aws_subnet" "GithubVPCsubnet1" {
   vpc_id                  = "${aws_vpc.GithubVPC.id}"
   cidr_block             = "${var.subnet1_cidr}"
   map_public_ip_on_launch = true
-  availability_zone = "us-east-1b"
+  availability_zone = "${var.aws_region}b"
 
   tags = {
     Name = "Github subnet 2"
