@@ -121,12 +121,6 @@ resource "aws_security_group" "Githubsg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
-
-# Creating key pair
-resource "aws_key_pair" "Githubkey" {
-  key_name   = "${var.key_name}"
-  public_key = "${file(var.public_key)}"
-}
   
 # Creating EC2 Instance
 resource "aws_instance" "Githubinstance" {
@@ -142,9 +136,6 @@ resource "aws_instance" "Githubinstance" {
   
   # Count of instance
   count= "${var.master_count}"
-  
-  # SSH key that we have generated above for connection
-  key_name = "${aws_key_pair.Githubkey.id}"
 
   # Attaching security group to our instance
   vpc_security_group_ids = ["${aws_security_group.Githubsg.id}"]

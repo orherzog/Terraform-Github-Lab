@@ -18,7 +18,10 @@ permissions:
 jobs:
   AssumeRoleAndCallIdentity:
     runs-on: ubuntu-latest
-
+    outputs:
+      AWS_ACCESS_KEY_ID: ${{ steps.assume-role.outputs.aws_access_key_id }}
+      AWS_SECRET_ACCESS_KEY: ${{ steps.assume-role.outputs.aws_secret_access_key }}
+      AWS_SESSION_TOKEN: ${{ steps.assume-role.outputs.aws_session_token }}
     steps:
       - name: Check out the repository
         uses: actions/checkout@v4
@@ -36,6 +39,12 @@ jobs:
           aws sts get-caller-identity
         id: sts
 
+      - name: Set outputs for next job
+        run: |
+          echo "AWS_ACCESS_KEY_ID=${{ steps.assume-role.outputs.aws_access_key_id }}" >> $GITHUB_ENV
+          echo "AWS_SECRET_ACCESS_KEY=${{ steps.assume-role.outputs.aws_secret_access_key }}" >> $GITHUB_ENV
+          echo "AWS_SESSION_TOKEN=${{ steps.assume-role.outputs.aws_session_token }}" >> $GITHUB_ENV
+
   TerraformBuild:
     needs: AssumeRoleAndCallIdentity
     runs-on: ubuntu-latest
@@ -48,6 +57,12 @@ jobs:
 
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v2
+
+      - name: Set AWS credentials
+        run: |
+          echo "AWS_ACCESS_KEY_ID=${{ needs.AssumeRoleAndCallIdentity.outputs.AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
+          echo "AWS_SECRET_ACCESS_KEY=${{ needs.AssumeRoleAndCallIdentity.outputs.AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
+          echo "AWS_SESSION_TOKEN=${{ needs.AssumeRoleAndCallIdentity.outputs.AWS_SESSION_TOKEN }}" >> $GITHUB_ENV
 
       - name: Terraform Init
         id: init
