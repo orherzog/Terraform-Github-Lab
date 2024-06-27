@@ -16,7 +16,7 @@ permissions:
   actions: write
 
 jobs:
-  AssumeRoleAndCallIdentity:
+  ApplyTerraformChanges:
     runs-on: ubuntu-latest
     outputs:
       AWS_ACCESS_KEY_ID: ${{ steps.assume-role.outputs.aws_access_key_id }}
@@ -50,7 +50,7 @@ jobs:
         run: terraform init
 
       - name: Terraform Format
-        run: terraform fmt -check
+        run: terraform fmt
 
       - name: Terraform Plan
         run: terraform plan

@@ -1,19 +1,3 @@
-# Defining Public Key
-variable "public_key" {
-  default = "tests.pub"
-}
-
-# Defining Private Key
-variable "private_key" {
-  default = "tests.pem"
-}
-
-# Definign Key Name for connection
-variable "key_name" {
-  default = "tests"
-  description = "Desired name of AWS key pair"
-}
-
 # Defining Region
 variable "aws_region" {
   default = "us-east-2"
