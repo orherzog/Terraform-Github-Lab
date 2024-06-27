@@ -158,30 +158,4 @@ resource "aws_instance" "Githubinstance" {
     volume_type = "standard"
     delete_on_termination = false
   }
-  
-  # SSH into instance 
-  connection {
-    
-    # Host name
-    host = self.public_ip
-    # The default username for our AMI
-    user = "ec2-user"
-    # Type of connection
-    type = "ssh"
-  }
-  
-  # Installing splunk on newly created instance
-  provisioner "remote-exec" {
-    inline = [
-      "sudo yum update -y",
-      "sudo amazon-linux-extras install docker -y",
-      "sudo service docker start",
-      "sudo usermod -a -G docker ec2-user",
-      "sudo chkconfig docker on",
-      "sudo yum install -y git",
-      "sudo chmod 666 /var/run/docker.sock",
-      "docker pull dhruvin30/dhsoniweb:v1",
-      "docker run -d -p 80:80 dhruvin30/dhsoniweb:latest"   
-  ]
- }
 }
