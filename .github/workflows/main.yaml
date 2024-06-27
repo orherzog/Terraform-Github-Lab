@@ -41,9 +41,9 @@ jobs:
 
       - name: Set outputs for next job
         run: |
-          echo "AWS_ACCESS_KEY_ID=${{ steps.assume-role.outputs.aws_access_key_id }}" >> $GITHUB_ENV
-          echo "AWS_SECRET_ACCESS_KEY=${{ steps.assume-role.outputs.aws_secret_access_key }}" >> $GITHUB_ENV
-          echo "AWS_SESSION_TOKEN=${{ steps.assume-role.outputs.aws_session_token }}" >> $GITHUB_ENV
+          echo "AWS_ACCESS_KEY_ID=${{ needs.AssumeRoleAndCallIdentity.outputs.AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
+          echo "AWS_SECRET_ACCESS_KEY=${{ needs.AssumeRoleAndCallIdentity.outputs.AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
+          echo "AWS_SESSION_TOKEN=${{ needs.AssumeRoleAndCallIdentity.outputs.AWS_SESSION_TOKEN }}" >> $GITHUB_ENV
 
   TerraformBuild:
     needs: AssumeRoleAndCallIdentity
